@@ -20,6 +20,7 @@ const sections = [
 
 <template>
   <UiContainer class="guide-page">
+    <AppHomeLink class="guide-page__back" />
     <header class="guide-page__hero">
       <h1>Твой гайд по PS5<span>.</span></h1>
       <p>От первого включения до смены игры. Все подсказки для аренды в одном месте.</p>
@@ -74,6 +75,10 @@ const sections = [
   --guide-anchor-offset: #{$gap-lg};
 
   padding-block: clamp(2.75rem, 7vw, 6rem);
+}
+
+.guide-page__back {
+  margin-bottom: clamp(1.25rem, 4vw, 2.5rem);
 }
 
 .guide-page__hero {

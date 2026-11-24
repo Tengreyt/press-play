@@ -5,8 +5,6 @@ services:
       dockerfile: docker/Dockerfile
     ports:
       - '127.0.0.1:3000:3000'
-    volumes:
-      - orders:/data
+    environment:
+      NUXT_PUBLIC_WHATSAPP_NUMBER: '${NUXT_PUBLIC_WHATSAPP_NUMBER:-}'
     restart: unless-stopped
-volumes:
-  orders:

@@ -1,9 +1,7 @@
 import { cp, mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 const isCloudflare = process.env.SITE_RUNTIME === 'cloudflare';
-const database = isCloudflare ? 'cloudflare' : 'sqlite';
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-11-01',
@@ -19,17 +17,11 @@ export default defineNuxtConfig({
       },
     },
   },
-  alias: {
-    '#order-database': fileURLToPath(new URL(`./server/database/${database}.ts`, import.meta.url)),
-  },
   nitro: {
     preset: isCloudflare ? 'cloudflare_module' : 'node-server',
     output: isCloudflare
       ? { dir: 'dist', serverDir: 'dist/server', publicDir: 'dist/client' }
       : undefined,
-    serverAssets: isCloudflare
-      ? []
-      : [{ baseName: 'migrations', dir: fileURLToPath(new URL('./drizzle', import.meta.url)), pattern: '*.sql' }],
     cloudflare: isCloudflare
       ? { deployConfig: true, nodeCompat: true, wrangler: { name: 'press-play-ps5-rental' } }
       : undefined,
@@ -48,9 +40,8 @@ export default defineNuxtConfig({
       });
     },
   },
-  runtimeConfig: { orderDatabasePath: '.data/orders.sqlite' },
-  routeRules: {
-    '/api/**': { headers: { 'cache-control': 'no-store' } },
+  runtimeConfig: {
+    public: { whatsappNumber: '' },
   },
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },

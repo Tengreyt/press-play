@@ -1,6 +1,6 @@
 <script setup lang="ts">
 useSeoMeta({
-  description: 'Аренда PlayStation 5. Оставьте заявку на нужные даты или откройте инструкции по консоли, играм и контроллеру.',
+  description: 'Аренда PlayStation 5 через WhatsApp и инструкции по консоли, играм и контроллеру.',
 });
 </script>
 
@@ -11,8 +11,8 @@ useSeoMeta({
       <HomeActionCard
         variant="rental"
         title="Взять PS5 в аренду"
-        description="Выбери даты и оставь контакт. Согласуем стоимость и получение."
-        action="Оставить заявку"
+        description="Напиши в WhatsApp, чтобы обсудить даты, стоимость и получение."
+        action="Обсудить аренду"
         to="/rent"
       />
       <HomeActionCard

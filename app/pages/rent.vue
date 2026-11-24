@@ -1,72 +1,54 @@
 <script setup lang="ts">
-import { safeParse } from 'valibot';
-import { rentalOrderSchema, todayInMoscow } from '#shared/rental-order';
-import { createRentalOrder } from '~/api/rental-service/requests/create-order';
-import type { RentalFormValues } from '~/types/types';
-import type { RentalReceipt } from '#shared/rental-order';
-
 useSeoMeta({
-  title: 'Заявка на аренду PS5',
-  description: 'Выбери даты аренды PlayStation 5 и оставь телефон или Telegram для согласования.',
+  title: 'Аренда PS5 через WhatsApp',
+  description: 'Напиши в WhatsApp, чтобы узнать, свободна ли PlayStation 5 на твои даты, и договориться об аренде.',
 });
 
-const today = useState('rental-today', todayInMoscow);
-const pending = ref(false);
-const receipt = ref<RentalReceipt | null>(null);
-const error = ref('');
-let lastAttempt: { values: string; id: string } | undefined;
-
-async function submit(values: RentalFormValues) {
-  if (pending.value) return;
-
-  error.value = '';
-  const key = JSON.stringify(values);
-  const id = lastAttempt?.values === key ? lastAttempt.id : crypto.randomUUID();
-  const order = safeParse(rentalOrderSchema, { ...values, id });
-
-  if (!order.success) {
-    error.value = order.issues[0].message;
-    return;
-  }
-
-  if (order.output.startsOn < todayInMoscow()) {
-    today.value = todayInMoscow();
-    error.value = 'Выбери сегодняшнюю дату или позже.';
-    return;
-  }
-
-  pending.value = true;
-  lastAttempt = { values: key, id };
-
-  try {
-    receipt.value = await createRentalOrder(order.output);
-  } catch {
-    error.value = 'Не удалось отправить заявку. Попробуй ещё раз, введённые данные сохранены в форме.';
-  } finally {
-    pending.value = false;
-  }
-}
+const whatsappNumber = useRuntimeConfig().public.whatsappNumber.trim();
+const whatsappDigits = whatsappNumber.replace(/[\s().-]/g, '').replace(/^\+/, '');
+const message = 'Привет! Хочу арендовать PS5. Подскажи, пожалуйста, свободные даты и стоимость.';
+const whatsappUrl = /^[1-9]\d{7,14}$/.test(whatsappDigits)
+  ? `https://wa.me/${whatsappDigits}?text=${encodeURIComponent(message)}`
+  : null;
 </script>
 
 <template>
   <UiContainer class="rent-page">
-    <div class="rent-page__intro">
-      <h1>Аренда PS5</h1>
-      <p>Выбери удобные даты. Мы свяжемся с тобой, проверим доступность приставки и обсудим стоимость и передачу.</p>
-      <p class="rent-page__note">Оплата на сайте не нужна.</p>
+    <AppHomeLink class="rent-page__back" />
+    <div class="rent-page__layout">
+      <header class="rent-page__intro">
+        <h1>Аренда PS5</h1>
+        <p>Напиши, на какие даты нужна приставка. В чате уточним, свободна ли PS5, сколько стоит аренда и как её забрать.</p>
+      </header>
+      <section class="rent-page__contact" aria-labelledby="rent-contact-title">
+        <h2 id="rent-contact-title">Связаться по аренде</h2>
+        <template v-if="whatsappUrl">
+          <UiButton :to="whatsappUrl" external class="rent-page__whatsapp">
+            <span>Написать в WhatsApp</span>
+            <span class="rent-page__number">{{ whatsappNumber }}</span>
+          </UiButton>
+          <p>В чате откроется черновик сообщения. Можешь добавить даты перед отправкой.</p>
+        </template>
+        <p v-else>Контакт для аренды временно недоступен.</p>
+      </section>
     </div>
-    <RentOrderReceipt v-if="receipt" :id="receipt.id" />
-    <RentOrderForm v-else :today="today" :pending="pending" :error="error" @submit="submit" />
   </UiContainer>
 </template>
 
 <style scoped lang="scss">
 .rent-page {
+  padding-block: clamp(2.5rem, 7vw, 6rem);
+}
+
+.rent-page__back {
+  margin-bottom: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.rent-page__layout {
   display: grid;
   grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
   align-items: start;
   gap: clamp(1.75rem, 6vw, 6.5rem);
-  padding-block: clamp(2.5rem, 7vw, 6rem);
 }
 
 .rent-page__intro {
@@ -85,24 +67,53 @@ async function submit(values: RentalFormValues) {
     color: $color-muted;
     font-size: 1.125rem;
   }
+}
 
-  .rent-page__note {
-    color: $color-lavender;
-    font-size: 0.9375rem;
-    font-weight: 650;
+.rent-page__contact {
+  display: grid;
+  justify-items: start;
+  gap: $gap-md;
+  padding: clamp(1.25rem, 3.5vw, 2.5rem);
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  background: $color-surface;
+
+  h2 {
+    @include heading;
+
+    font-size: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  p {
+    max-width: 28rem;
+    color: $color-muted;
   }
 }
 
+.rent-page__whatsapp {
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.rent-page__number {
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 580;
+}
+
 @media (max-width: $breakpoint-tablet) {
-  .rent-page {
+  .rent-page__layout {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: $breakpoint-mobile) {
   .rent-page {
-    gap: $gap-lg;
     padding-block: $gap-xl $gap-2xl;
+  }
+
+  .rent-page__layout {
+    gap: $gap-lg;
   }
 
   .rent-page__intro {
@@ -111,6 +122,15 @@ async function submit(values: RentalFormValues) {
     p {
       font-size: 1rem;
     }
+  }
+
+  .rent-page__contact {
+    padding: $gap-md;
+    border-radius: $radius-md;
+  }
+
+  .rent-page__whatsapp {
+    justify-self: stretch;
   }
 }
 </style>

@@ -1,12 +1,3 @@
-export interface RentalFormValues {
-  name: string;
-  contact: string;
-  startsOn: string;
-  endsOn: string;
-  note: string;
-  contactConsent: boolean;
-}
-
 export interface GuideArticle {
   title: string;
   steps: string[];
