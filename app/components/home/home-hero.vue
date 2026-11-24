@@ -1,11 +1,16 @@
 <template>
   <section class="home-hero" aria-labelledby="home-title">
-    <div class="home-hero__image" aria-hidden="true">
-      <img src="/images/ps5-hero.jpg" alt="" width="1536" height="1024" fetchpriority="high">
-    </div>
+    <picture class="home-hero__image" aria-hidden="true">
+      <source media="(max-width: 36rem)" type="image/webp" srcset="/images/ps5-hero-mobile.webp" width="636" height="680">
+      <source type="image/webp" srcset="/images/ps5-hero.webp" width="1320" height="880">
+      <img src="/images/ps5-hero.jpg" alt="" width="900" height="600" fetchpriority="high" decoding="async">
+    </picture>
     <div class="home-hero__copy">
       <p class="home-hero__eyebrow">Аренда PlayStation 5</p>
-      <h1 id="home-title" class="home-hero__title">Твой ход<span>.</span></h1>
+      <h1 id="home-title" class="home-hero__title">
+        Твой ход<span class="home-hero__period">.</span>
+        <span class="home-hero__hanging-controller" aria-hidden="true" />
+      </h1>
       <p class="home-hero__description">PS5 на вечер, выходные или дольше.</p>
     </div>
   </section>
@@ -37,6 +42,8 @@
     width: 100%;
     height: 100%;
     mask-image: linear-gradient(to right, transparent 8%, black 53%, black 94%, transparent);
+    object-fit: cover;
+    object-position: right center;
   }
 }
 
@@ -79,10 +86,14 @@
   font-weight: 850;
   line-height: 0.89;
   text-shadow: 0 0.2rem 2.5rem rgb(8 5 14 / 50%);
+}
 
-  span {
-    color: $color-accent;
-  }
+.home-hero__period {
+  color: $color-accent;
+}
+
+.home-hero__hanging-controller {
+  display: none;
 }
 
 .home-hero__description {
@@ -119,21 +130,52 @@
   .home-hero__image {
     right: -0.75rem;
     bottom: -0.375rem;
-    height: min(12.75rem, 62vw);
-    mask-image: linear-gradient(to bottom, transparent 18%, black 46%, black 79%, transparent);
-    opacity: 0.85;
+    height: min(19rem, 80vw);
+    aspect-ratio: 636 / 680;
+    mask-image: linear-gradient(to bottom, transparent, black 16%, black 81%, transparent);
+    opacity: 0.87;
+
+    img {
+      mask-image: linear-gradient(to right, transparent 3%, black 34%, black 91%, transparent);
+    }
   }
 
   .home-hero__copy {
     gap: $gap-sm;
     margin-top: 0;
+
+    &::before {
+      position: absolute;
+      z-index: -1;
+      inset: 0 -1rem -4rem;
+      background: radial-gradient(ellipse 54% 48% at 56% 46%, rgb(16 13 24 / 94%) 14%, rgb(16 13 24 / 68%) 56%, rgb(16 13 24 / 27%) 78%, transparent 100%);
+      content: '';
+      pointer-events: none;
+    }
   }
 
   .home-hero__title {
+    position: relative;
     font-size: clamp(3.25rem, 13.5vw, 5rem);
   }
 
+  .home-hero__hanging-controller {
+    position: absolute;
+    z-index: 1;
+    top: 0.31em;
+    right: calc(100% - 0.25em);
+    display: block;
+    width: clamp(2.85rem, 16vw, 4.5rem);
+    aspect-ratio: 192 / 126;
+    background: url('/images/dualsense-mobile.webp') center / contain no-repeat;
+    filter: drop-shadow(0 0.3rem 0.35rem rgb(0 0 0 / 55%));
+    pointer-events: none;
+    transform: rotate(-18deg);
+    transform-origin: 79% 24%;
+  }
+
   .home-hero__description {
+    color: $color-text;
     text-shadow: 0 0 0.8rem $color-background;
   }
 }

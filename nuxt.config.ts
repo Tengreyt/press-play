@@ -8,7 +8,10 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   modules: ['nuxt-svgo', '@nuxt/eslint'],
   components: [{ path: '~/components', pathPrefix: false }],
-  css: ['@fontsource-variable/inter', '~/assets/scss/index.scss'],
+  css: ['~/assets/scss/index.scss'],
+  experimental: {
+    defaults: { nuxtLink: { prefetchOn: { visibility: false, interaction: true } } },
+  },
   svgo: { autoImportPath: false, dts: true },
   vite: {
     css: {
