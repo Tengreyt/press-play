@@ -1,0 +1,21 @@
+@use './variables' as *;
+
+@mixin focus-ring {
+  outline: 2px solid $color-lavender;
+  outline-offset: 4px;
+}
+
+@mixin label {
+  font-size: 0.8125rem;
+  font-weight: 730;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+@mixin heading {
+  font-weight: 760;
+  letter-spacing: -0.065em;
+  line-height: 1.04;
+  text-wrap: balance;
+}

@@ -1,0 +1,12 @@
+services:
+  site:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - '127.0.0.1:3000:3000'
+    volumes:
+      - orders:/data
+    restart: unless-stopped
+volumes:
+  orders:
