@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 import { cp, mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
@@ -40,6 +41,11 @@ export default defineNuxtConfig({
         await mkdir(metadata, { recursive: true });
         await cp('.openai/hosting.json', join(metadata, 'hosting.json'));
         await cp('drizzle', join(metadata, 'drizzle'), { recursive: true });
+
+        const revision = getCommittedRevision();
+        if (revision) {
+          await writeFile(join(options.output.publicDir, 'press-play-deployment.json'), JSON.stringify({ revision }));
+        }
       });
     },
   },
@@ -56,3 +62,12 @@ export default defineNuxtConfig({
   },
   typescript: { strict: true },
 });
+
+function getCommittedRevision() {
+  try {
+    const git = (...args: string[]) => execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    return git('status', '--porcelain') ? undefined : git('rev-parse', '--verify', 'HEAD');
+  } catch {
+    return undefined;
+  }
+}

@@ -2,6 +2,8 @@
 
 Сайт аренды PlayStation 5 на Nuxt 4. На главной два перехода: аренда через WhatsApp и справочник. В справочнике есть текст на русском, правила пользования и видео официальных каналов PlayStation на английском.
 
+[Открыть Press Play](https://press-play-ps5-rental.halid-taramov20004.chatgpt.site/)
+
 ## Запуск
 
 Нужен Node.js 22.18 или новее. Для подстановки другого номера WhatsApp укажи в `.env` значение `NUXT_PUBLIC_WHATSAPP_NUMBER` с кодом страны. Без переменной на странице показывается основной контакт Press Play.
@@ -15,6 +17,10 @@ npm run build
 ```
 
 `npm run build` собирает Worker для Sites в `dist/`. Номер опубликованного сайта задаётся переменной `NUXT_PUBLIC_WHATSAPP_NUMBER` в настройках Sites. Для обычного Node.js используй `npm run build:node` и `npm run preview` с переменной в окружении либо `docker compose up -d --build`. Контейнер слушает `127.0.0.1:3000`.
+
+## Публикация
+
+Сделай коммит перед сборкой для Sites. После публикации отправь этот же коммит в GitHub. Workflow сверяет SHA по публичному адресу `/press-play-deployment.json` и обновляет **Deployments → production** при пуше в основную ветку и примерно раз в пять минут. Повторную проверку можно запустить в **Actions → Sync Sites production deployment**.
 
 ## Аренда
 
