@@ -4,12 +4,21 @@ useSeoMeta({
   description: 'Напиши в WhatsApp, чтобы узнать, свободна ли PlayStation 5 на твои даты, и договориться об аренде.',
 });
 
-const whatsappNumber = useRuntimeConfig().public.whatsappNumber.trim();
-const whatsappDigits = whatsappNumber.replace(/[\s().-]/g, '').replace(/^\+/, '');
-const message = 'Привет! Хочу арендовать PS5. Подскажи, пожалуйста, свободные даты и стоимость.';
-const whatsappUrl = /^[1-9]\d{7,14}$/.test(whatsappDigits)
-  ? `https://wa.me/${whatsappDigits}?text=${encodeURIComponent(message)}`
-  : null;
+function phoneDigits(number: string): string {
+  return number.replace(/[\s().-]/g, '').replace(/^\+/, '');
+}
+
+const defaultWhatsAppNumber = '+7 928 269-25-88';
+const configuredNumber = String(useRuntimeConfig().public.whatsappNumber).trim();
+const whatsappNumber = /^[1-9]\d{7,14}$/.test(phoneDigits(configuredNumber))
+  ? configuredNumber
+  : defaultWhatsAppNumber;
+const whatsappDigits = phoneDigits(whatsappNumber);
+const draft = encodeURIComponent('Привет! Хочу арендовать PS5. Подскажи, пожалуйста, свободные даты и стоимость.');
+const desktopQuery = `phone=${whatsappDigits}&text=${draft}&type=phone_number&app_absent=0`;
+const whatsappUrl = `https://wa.me/${whatsappDigits}?text=${draft}`;
+const whatsappWebUrl = `https://web.whatsapp.com/send/?${desktopQuery}`;
+const whatsappAppUrl = `whatsapp://send/?${desktopQuery}`;
 </script>
 
 <template>
@@ -22,14 +31,15 @@ const whatsappUrl = /^[1-9]\d{7,14}$/.test(whatsappDigits)
       </header>
       <section class="rent-page__contact" aria-labelledby="rent-contact-title">
         <h2 id="rent-contact-title">Связаться по аренде</h2>
-        <template v-if="whatsappUrl">
-          <UiButton :to="whatsappUrl" external class="rent-page__whatsapp">
-            <span>Написать в WhatsApp</span>
-            <span class="rent-page__number">{{ whatsappNumber }}</span>
-          </UiButton>
-          <p>В чате откроется черновик сообщения. Можешь добавить даты перед отправкой.</p>
-        </template>
-        <p v-else>Контакт для аренды временно недоступен.</p>
+        <NuxtLink :to="whatsappUrl" external class="rent-page__number" :aria-label="`Чат WhatsApp с номером ${whatsappNumber}`">
+          {{ whatsappNumber }}
+        </NuxtLink>
+        <div class="rent-page__desktop-actions">
+          <UiButton :to="whatsappWebUrl" external target="_blank" rel="noopener noreferrer">WhatsApp Web</UiButton>
+          <UiButton :to="whatsappAppUrl" external variant="secondary">Открыть приложение</UiButton>
+        </div>
+        <UiButton :to="whatsappUrl" external class="rent-page__mobile-action">Открыть чат в WhatsApp</UiButton>
+        <p>В чате откроется черновик сообщения. Можешь добавить даты перед отправкой.</p>
       </section>
     </div>
   </UiContainer>
@@ -90,15 +100,32 @@ const whatsappUrl = /^[1-9]\d{7,14}$/.test(whatsappDigits)
   }
 }
 
-.rent-page__whatsapp {
-  flex-direction: column;
-  gap: 0.125rem;
+.rent-page__desktop-actions {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: $gap-sm;
+
+  > a {
+    flex: 1 0 auto;
+  }
+}
+
+.rent-page__mobile-action.ui-button {
+  display: none;
 }
 
 .rent-page__number {
-  font-size: 0.875rem;
+  display: inline-flex;
+  min-height: $touch-target;
+  align-items: center;
+  border-radius: 0.25rem;
+  color: $color-lavender;
+  font-size: 1.125rem;
   font-variant-numeric: tabular-nums;
-  font-weight: 580;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
 }
 
 @media (max-width: $breakpoint-tablet) {
@@ -128,8 +155,15 @@ const whatsappUrl = /^[1-9]\d{7,14}$/.test(whatsappDigits)
     padding: $gap-md;
     border-radius: $radius-md;
   }
+}
 
-  .rent-page__whatsapp {
+@media (hover: none) and (pointer: coarse) {
+  .rent-page__desktop-actions {
+    display: none;
+  }
+
+  .rent-page__mobile-action.ui-button {
+    display: inline-flex;
     justify-self: stretch;
   }
 }
