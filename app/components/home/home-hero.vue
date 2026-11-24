@@ -18,6 +18,7 @@
   min-height: clamp(25rem, 36vw, 32.75rem);
   align-items: center;
   background: $color-background;
+  container-type: inline-size;
   isolation: isolate;
 }
 
@@ -90,6 +91,12 @@
   font-size: clamp(1rem, 1.65vw, 1.1875rem);
   font-weight: 490;
   text-wrap: balance;
+}
+
+@container (width <= 64rem) {
+  .home-hero__image {
+    height: min(100%, 40cqi);
+  }
 }
 
 @media (max-width: $breakpoint-tablet) {
