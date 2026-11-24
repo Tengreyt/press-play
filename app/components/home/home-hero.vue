@@ -162,16 +162,15 @@
   .home-hero__hanging-controller {
     position: absolute;
     z-index: 1;
-    top: 0.31em;
-    right: calc(100% - 0.25em);
+    top: 0.05em;
+    left: 0.33em;
     display: block;
-    width: clamp(2.85rem, 16vw, 4.5rem);
+    width: clamp(2rem, 12vw, 3.25rem);
     aspect-ratio: 192 / 126;
     background: url('/images/dualsense-mobile.webp') center / contain no-repeat;
-    filter: drop-shadow(0 0.3rem 0.35rem rgb(0 0 0 / 55%));
+    filter: drop-shadow(0 0.2rem 0.25rem rgb(0 0 0 / 55%));
     pointer-events: none;
-    transform: rotate(-18deg);
-    transform-origin: 79% 24%;
+    transform: translate(-50%, -59%) rotate(-9deg);
   }
 
   .home-hero__description {
