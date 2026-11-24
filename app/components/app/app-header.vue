@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import IconPlay from '~/assets/icons/play.svg';
+import { Menu, Play } from '@lucide/vue';
+
+defineProps<{ menuId: string; menuOpen: boolean }>();
+const emit = defineEmits<{ (event: 'toggle-menu'): void }>();
 </script>
 
 <template>
@@ -7,14 +10,21 @@ import IconPlay from '~/assets/icons/play.svg';
     <UiContainer class="app-header__inner">
       <NuxtLink to="/" class="app-header__brand" aria-label="Press Play, главная">
         <span class="app-header__mark" aria-hidden="true">
-          <IconPlay />
+          <Play viewBox="1 0 24 24" :stroke-width="1.5" />
         </span>
         <span>press<span class="app-header__dot">.</span>play</span>
       </NuxtLink>
-      <nav class="app-header__nav" aria-label="Основная навигация">
-        <NuxtLink to="/rent" class="app-header__link">Аренда</NuxtLink>
-        <NuxtLink to="/guide" class="app-header__link">Инструкции</NuxtLink>
-      </nav>
+      <UiButton
+        size="icon"
+        variant="secondary"
+        aria-label="Меню"
+        :aria-controls="menuId"
+        :aria-expanded="menuOpen"
+        aria-haspopup="dialog"
+        @click="emit('toggle-menu')"
+      >
+        <Menu :size="23" aria-hidden="true" />
+      </UiButton>
     </UiContainer>
   </header>
 </template>
@@ -56,6 +66,7 @@ import IconPlay from '~/assets/icons/play.svg';
   place-items: center;
 
   svg {
+    display: block;
     width: 1.15rem;
     height: 1.15rem;
     fill: currentcolor;
@@ -64,27 +75,6 @@ import IconPlay from '~/assets/icons/play.svg';
 
 .app-header__dot {
   color: $color-accent;
-}
-
-.app-header__nav {
-  display: flex;
-  align-items: center;
-  gap: clamp(0.75rem, 3vw, 2.25rem);
-}
-
-.app-header__link {
-  display: flex;
-  min-height: $touch-target;
-  align-items: center;
-  padding: $gap-xs 0;
-  color: $color-muted;
-  font-size: 0.9375rem;
-  font-weight: 640;
-  transition: color $transition-fast;
-
-  &:hover, &.router-link-active {
-    color: $color-accent;
-  }
 }
 
 @media (max-width: $breakpoint-mobile) {
@@ -101,10 +91,6 @@ import IconPlay from '~/assets/icons/play.svg';
   .app-header__mark {
     width: 1.875rem;
     height: 1.875rem;
-  }
-
-  .app-header__link {
-    font-size: 0.875rem;
   }
 }
 </style>
