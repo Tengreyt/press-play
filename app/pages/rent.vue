@@ -14,7 +14,7 @@ const whatsappNumber = /^[1-9]\d{7,14}$/.test(phoneDigits(configuredNumber))
   ? configuredNumber
   : defaultWhatsAppNumber;
 const whatsappDigits = phoneDigits(whatsappNumber);
-const draft = encodeURIComponent('Привет! Хочу арендовать PS5. Подскажи, пожалуйста, свободные даты и стоимость.');
+const draft = encodeURIComponent('Ассаламу Алайкум. Хочу арендовать PS5. Подскажи, пожалуйста, свободные даты и стоимость.');
 const desktopQuery = `phone=${whatsappDigits}&text=${draft}&type=phone_number&app_absent=0`;
 const whatsappUrl = `https://wa.me/${whatsappDigits}?text=${draft}`;
 const whatsappWebUrl = `https://web.whatsapp.com/send/?${desktopQuery}`;
