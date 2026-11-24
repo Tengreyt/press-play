@@ -1,0 +1,13 @@
+name: Check Sites deployment on a schedule
+
+on:
+  schedule:
+    - cron: '3-58/5 * * * *'
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  sync:
+    uses: ./.github/workflows/sites-deployment.yml

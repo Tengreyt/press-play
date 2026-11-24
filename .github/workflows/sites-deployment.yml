@@ -3,8 +3,7 @@ name: Sync Sites production deployment
 on:
   push:
     branches: ['**']
-  schedule:
-    - cron: '3-58/5 * * * *'
+  workflow_call:
   workflow_dispatch:
 
 permissions:
