@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import IconCheck from '~/assets/icons/check.svg';
 
+useHead({ htmlAttrs: { class: 'guide-scroll' } });
 useSeoMeta({
   title: 'Инструкции по PS5',
   description: 'Как подключить PlayStation 5, поменять игру, подключить геймпад и разобраться с частыми неполадками.',
 });
 
 const { articles, troubleshooting, videos, rules } = useGuideData();
+const route = useRoute();
 const activeVideo = ref('');
 const sections = [
   { id: 'getting-started', label: 'Первые шаги' },
   { id: 'videos', label: 'Видео' },
-  { id: 'troubleshooting', label: 'Неполадки' },
+  { id: 'troubleshooting', label: 'Помощь' },
   { id: 'rules', label: 'Правила' },
 ];
 </script>
@@ -24,7 +26,16 @@ const sections = [
     </header>
     <div class="guide-page__layout">
       <nav class="guide-page__nav" aria-label="Разделы инструкции">
-        <a v-for="section in sections" :key="section.id" :href="`#${section.id}`">{{ section.label }}</a>
+        <NuxtLink v-for="section in sections" :key="section.id" :to="`#${section.id}`" custom>
+          <template #default="{ navigate }">
+            <a
+              :href="`#${section.id}`"
+              :aria-current="route.hash === `#${section.id}` ? 'location' : undefined"
+              class="guide-page__nav-link"
+              @click="navigate"
+            >{{ section.label }}</a>
+          </template>
+        </NuxtLink>
       </nav>
       <div class="guide-page__content">
         <section id="getting-started" class="guide-page__section" aria-labelledby="getting-started-title">
@@ -60,6 +71,8 @@ const sections = [
 
 <style scoped lang="scss">
 .guide-page {
+  --guide-anchor-offset: #{$gap-lg};
+
   padding-block: clamp(2.75rem, 7vw, 6rem);
 }
 
@@ -100,21 +113,30 @@ const sections = [
   top: $gap-lg;
   display: grid;
   gap: $gap-xs;
+}
 
-  a {
-    padding: $gap-xs $gap-sm;
-    border: 1px solid $color-border;
-    border-radius: $radius-sm;
-    color: $color-muted;
-    background: $color-surface;
-    font-size: 0.9375rem;
-    font-weight: 650;
-    transition: border-color $transition-fast, color $transition-fast;
+.guide-page__nav-link {
+  display: flex;
+  min-height: $touch-target;
+  align-items: center;
+  padding: $gap-xs $gap-sm;
+  border: 1px solid $color-border;
+  border-radius: $radius-sm;
+  color: $color-muted;
+  background: $color-surface;
+  font-size: 0.9375rem;
+  font-weight: 650;
+  transition: border-color $transition-fast, color $transition-fast, background-color $transition-fast;
 
-    &:hover {
-      border-color: $color-lavender;
-      color: $color-text;
-    }
+  &:hover, &:focus-visible {
+    border-color: $color-lavender;
+    color: $color-text;
+  }
+
+  &[aria-current='location'] {
+    border-color: $color-lavender;
+    color: $color-text;
+    background: $color-surface-raised;
   }
 }
 
@@ -126,7 +148,7 @@ const sections = [
 .guide-page__section {
   display: grid;
   gap: $gap-lg;
-  scroll-margin-top: $gap-lg;
+  scroll-margin-top: var(--guide-anchor-offset);
 
   h2 {
     @include heading;
@@ -168,15 +190,59 @@ const sections = [
 }
 
 @media (max-width: $breakpoint-tablet) {
+  .guide-page {
+    --guide-anchor-offset: 4.75rem;
+  }
+
   .guide-page__layout {
-    grid-template-columns: 1fr;
-    gap: $gap-xl;
+    display: block;
   }
 
   .guide-page__nav {
-    position: static;
-    display: flex;
-    flex-wrap: wrap;
+    z-index: 2;
+    top: 0;
+    grid-template-columns: 1.25fr 0.85fr 1fr 1fr;
+    gap: 0.375rem;
+    padding-block: $gap-xs;
+    background: $color-background;
+  }
+
+  .guide-page__nav-link {
+    min-height: $control-size;
+    justify-content: center;
+    padding: 0.35rem 0.2rem;
+    font-size: 0.875rem;
+    line-height: 1.25;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .guide-page__content {
+    margin-top: $gap-lg;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .guide-page {
+    padding-top: $gap-xl;
+  }
+
+  .guide-page__hero {
+    gap: $gap-sm;
+    margin-bottom: $gap-lg;
+
+    p {
+      font-size: 1rem;
+    }
+  }
+
+  .guide-page__videos {
+    grid-template-columns: 1fr;
+    gap: $gap-xs;
+  }
+
+  .guide-page__rules {
+    padding: $gap-md;
   }
 }
 </style>

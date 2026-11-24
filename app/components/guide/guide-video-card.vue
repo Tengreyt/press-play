@@ -9,7 +9,7 @@ const watchUrl = computed(() => `https://www.youtube.com/watch?v=${props.video.i
 </script>
 
 <template>
-  <article class="guide-video-card">
+  <article class="guide-video-card" :class="{ 'guide-video-card--playing': active }">
     <div class="guide-video-card__media">
       <iframe
         v-if="active"
@@ -59,12 +59,6 @@ const watchUrl = computed(() => `https://www.youtube.com/watch?v=${props.video.i
     &:focus-visible {
       outline-offset: -4px;
     }
-
-    &:hover .guide-video-card__play {
-      background: $color-accent-hover;
-      box-shadow: 0 0 1.5rem rgb(216 250 99 / 24%);
-      transform: scale(1.14);
-    }
   }
 }
 
@@ -107,6 +101,34 @@ const watchUrl = computed(() => `https://www.youtube.com/watch?v=${props.video.i
     font-size: 0.875rem;
     text-decoration: underline;
     text-underline-offset: 0.23em;
+  }
+}
+
+@media (hover: hover) {
+  .guide-video-card__media button:hover .guide-video-card__play {
+    background: $color-accent-hover;
+    box-shadow: 0 0 1.5rem rgb(216 250 99 / 24%);
+    transform: scale(1.14);
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .guide-video-card:not(.guide-video-card--playing) {
+    display: grid;
+    grid-template-columns: 4.75rem minmax(0, 1fr);
+
+    .guide-video-card__media {
+      aspect-ratio: auto;
+    }
+
+    .guide-video-card__play {
+      width: $touch-target;
+      height: $touch-target;
+    }
+  }
+
+  .guide-video-card__body {
+    padding: $gap-sm;
   }
 }
 </style>

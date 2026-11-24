@@ -98,4 +98,19 @@ async function submit(values: RentalFormValues) {
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: $breakpoint-mobile) {
+  .rent-page {
+    gap: $gap-lg;
+    padding-block: $gap-xl $gap-2xl;
+  }
+
+  .rent-page__intro {
+    gap: $gap-sm;
+
+    p {
+      font-size: 1rem;
+    }
+  }
+}
 </style>

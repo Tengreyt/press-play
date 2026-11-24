@@ -17,27 +17,31 @@
   display: grid;
   min-height: clamp(25rem, 36vw, 32.75rem);
   align-items: center;
+  background: $color-background;
   isolation: isolate;
 }
 
 .home-hero__image {
   position: absolute;
-  z-index: -1;
-  inset: 0 max(-2rem, -2.5vw) 0 26%;
-  mask-image: linear-gradient(to right, transparent, black 28%, black 93%, transparent), linear-gradient(to bottom, transparent, black 12%, black 81%, transparent);
-  mask-composite: intersect;
+  right: max(-2rem, -2.5vw);
+  bottom: 0;
+  height: 100%;
+  aspect-ratio: 3 / 2;
+  mask-image: linear-gradient(to bottom, transparent, black 15%, black 80%, transparent);
+  mix-blend-mode: screen;
   pointer-events: none;
 
   img {
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    object-position: right center;
+    mask-image: linear-gradient(to right, transparent 8%, black 53%, black 94%, transparent);
   }
 }
 
 .home-hero__copy {
+  position: relative;
+  z-index: 1;
   display: grid;
   width: min(100%, 42rem);
   justify-items: center;
@@ -94,7 +98,6 @@
   }
 
   .home-hero__image {
-    inset-inline-start: 12%;
     opacity: 0.68;
   }
 }
@@ -103,32 +106,27 @@
   .home-hero {
     min-height: 0;
     align-items: start;
-    padding-block: 2.8rem 11.25rem;
+    padding-block: 2.125rem 9.5rem;
   }
 
   .home-hero__image {
-    inset: 9rem -0.75rem -0.5rem;
-    mask-image: linear-gradient(to right, transparent, black 26%, black 93%, transparent), linear-gradient(to bottom, transparent, black 36%, black 90%, transparent);
+    right: -0.75rem;
+    bottom: -0.375rem;
+    height: min(12.75rem, 62vw);
+    mask-image: linear-gradient(to bottom, transparent 18%, black 46%, black 79%, transparent);
     opacity: 0.85;
-
-    img {
-      object-fit: cover;
-      object-position: right bottom;
-    }
   }
 
   .home-hero__copy {
-    z-index: 1;
-    gap: $gap-md;
+    gap: $gap-sm;
     margin-top: 0;
   }
 
   .home-hero__title {
-    font-size: clamp(3.75rem, 13.5vw, 5rem);
+    font-size: clamp(3.25rem, 13.5vw, 5rem);
   }
 
   .home-hero__description {
-    max-width: 16rem;
     text-shadow: 0 0 0.8rem $color-background;
   }
 }

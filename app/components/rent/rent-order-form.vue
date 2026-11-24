@@ -96,6 +96,7 @@ function submit() {
 
 .rent-order-form__consent {
   display: flex;
+  min-height: $touch-target;
   align-items: flex-start;
   gap: $gap-sm;
   color: $color-muted;
@@ -119,7 +120,27 @@ function submit() {
   justify-self: start;
 }
 
-@media (width <= 25rem) {
+@media (max-width: $breakpoint-mobile) {
+  .rent-order-form {
+    gap: $gap-md;
+    padding: $gap-md;
+    border-radius: $radius-md;
+  }
+
+  .rent-order-form__dates {
+    gap: $gap-sm;
+  }
+
+  .rent-order-form__legend {
+    margin-bottom: $gap-md;
+  }
+
+  .rent-order-form__submit {
+    justify-self: stretch;
+  }
+}
+
+@media (width <= 23rem) {
   .rent-order-form__dates {
     grid-template-columns: 1fr;
   }

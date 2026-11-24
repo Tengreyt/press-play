@@ -36,12 +36,8 @@ withDefaults(defineProps<{
   text-align: center;
   transition: background $transition-fast, border-color $transition-fast, box-shadow $transition-fast, transform $transition-fast;
 
-  &:hover {
-    transform: translateY(-2px);
-  }
-
   &:active {
-    transform: translateY(1px);
+    transform: scale(0.98);
   }
 
   &:disabled {
@@ -83,6 +79,12 @@ withDefaults(defineProps<{
 
   &:focus-visible {
     outline-color: $color-on-accent;
+  }
+}
+
+@media (hover: hover) {
+  .ui-button:hover:not(:disabled, :active) {
+    transform: translateY(-2px);
   }
 }
 </style>

@@ -44,9 +44,8 @@ const isRental = computed(() => props.variant === 'rental');
   isolation: isolate;
   transition: border-color $transition-fast, transform $transition-fast;
 
-  &:hover, &:focus-within {
+  &:focus-within {
     border-color: $color-lavender;
-    transform: translateY(-3px);
   }
 
   &::before, &::after {
@@ -71,7 +70,7 @@ const isRental = computed(() => props.variant === 'rental');
     right: -4.5rem;
   }
 
-  &:hover::before, &:focus-within::before {
+  &:focus-within::before {
     transform: rotate(-15deg) translateX(-0.6rem);
   }
 }
@@ -81,7 +80,7 @@ const isRental = computed(() => props.variant === 'rental');
   color: $color-on-accent;
   background: radial-gradient(ellipse at right top, $color-accent-hover 0, transparent 57%), $color-accent;
 
-  &:hover, &:focus-within {
+  &:focus-within {
     border-color: $color-accent-hover;
   }
 }
@@ -137,6 +136,41 @@ const isRental = computed(() => props.variant === 'rental');
 @media (max-width: $breakpoint-mobile) {
   .home-action-card {
     min-height: 0;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: $gap-sm;
+    padding: $gap-md;
+    border-radius: $radius-md;
+  }
+
+  .home-action-card__icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .home-action-card__title {
+    font-size: 1.5rem;
+  }
+
+  .home-action-card__button {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+    margin: 0;
+  }
+}
+
+@media (hover: hover) {
+  .home-action-card:hover {
+    border-color: $color-lavender;
+    transform: translateY(-3px);
+
+    &::before {
+      transform: rotate(-15deg) translateX(-0.6rem);
+    }
+  }
+
+  .home-action-card--rental:hover {
+    border-color: $color-accent-hover;
   }
 }
 </style>

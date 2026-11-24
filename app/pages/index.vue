@@ -40,6 +40,7 @@ useSeoMeta({
 @media (max-width: $breakpoint-mobile) {
   .home-page__actions {
     grid-template-columns: 1fr;
+    gap: $gap-sm;
   }
 }
 </style>

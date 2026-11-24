@@ -73,6 +73,9 @@ import IconPlay from '~/assets/icons/play.svg';
 }
 
 .app-header__link {
+  display: flex;
+  min-height: $touch-target;
+  align-items: center;
   padding: $gap-xs 0;
   color: $color-muted;
   font-size: 0.9375rem;

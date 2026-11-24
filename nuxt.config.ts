@@ -53,6 +53,7 @@ export default defineNuxtConfig({
     '/api/**': { headers: { 'cache-control': 'no-store' } },
   },
   app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
     head: {
       htmlAttrs: { lang: 'ru' },
       link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
