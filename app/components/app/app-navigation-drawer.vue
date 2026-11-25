@@ -5,56 +5,27 @@ const props = defineProps<{ id: string; open: boolean }>();
 const emit = defineEmits<{ (event: 'close'): void }>();
 const drawer = useTemplateRef<HTMLDialogElement>('drawer');
 
-function syncDrawer() {
+watchPostEffect(() => {
   const panel = drawer.value;
-  if (!panel) return;
+  const isOpen = props.open;
+  if (!panel || panel.open === isOpen) return;
 
-  if (!props.open) {
-    if (panel.open) panel.close();
-    return;
-  }
-
-  // The shell owns the layout breakpoint. The drawer only uses it to choose native dialog behavior.
-  const isModal = getComputedStyle(panel).getPropertyValue('--site-drawer-docked').trim() !== '1';
-  if (panel.open && panel.matches(':modal') === isModal) return;
-  if (panel.open) panel.close();
-
-  if (isModal) panel.showModal();
-  else panel.show();
-}
-
-function closeDockedOnEscape(event: KeyboardEvent) {
-  const panel = drawer.value;
-  if (event.key === 'Escape' && panel?.open && !panel.matches(':modal')) {
-    event.preventDefault();
-    emit('close');
-  }
-}
+  if (isOpen) panel.showModal();
+  else panel.close();
+});
 
 function closeFromBackdrop(event: MouseEvent) {
   const panel = drawer.value;
-  if (panel?.matches(':modal') && event.clientX < panel.getBoundingClientRect().left) {
+  if (panel && event.clientX < panel.getBoundingClientRect().left) {
     emit('close');
   }
 }
 
 function closeAfterSelection(event: MouseEvent) {
-  if (drawer.value?.matches(':modal') && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+  if (!event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
     emit('close');
   }
 }
-
-watch(() => props.open, syncDrawer, { flush: 'post' });
-
-onMounted(() => {
-  window.addEventListener('resize', syncDrawer);
-  window.addEventListener('keydown', closeDockedOnEscape);
-});
-
-onUnmounted(() => {
-  window.removeEventListener('resize', syncDrawer);
-  window.removeEventListener('keydown', closeDockedOnEscape);
-});
 </script>
 
 <template>
@@ -90,7 +61,7 @@ onUnmounted(() => {
   inset: 0 0 0 auto;
   display: none;
   overflow: auto;
-  width: var(--site-drawer-width);
+  width: min(84vw, 22rem);
   max-width: none;
   height: 100dvh;
   max-height: none;
@@ -160,6 +131,12 @@ onUnmounted(() => {
     border-color: $color-border;
     color: $color-accent;
     background: $color-surface-raised;
+  }
+}
+
+@media (min-width: $breakpoint-desktop) {
+  .app-navigation-drawer {
+    width: min(30vw, 30rem);
   }
 }
 

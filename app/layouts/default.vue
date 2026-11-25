@@ -4,7 +4,7 @@ const menuOpen = ref(false);
 </script>
 
 <template>
-  <div class="site-layout" :class="{ 'site-layout--menu-open': menuOpen }">
+  <div class="site-layout">
     <div class="site-layout__page">
       <a class="site-layout__skip" href="#main-content">К содержанию</a>
       <AppHeader :menu-id="menuId" :menu-open="menuOpen" @toggle-menu="menuOpen = !menuOpen" />
@@ -19,9 +19,6 @@ const menuOpen = ref(false);
 
 <style scoped lang="scss">
 .site-layout {
-  --site-drawer-width: min(84vw, 22rem);
-  --site-drawer-docked: 0;
-
   overflow-x: clip;
 }
 
@@ -30,7 +27,6 @@ const menuOpen = ref(false);
   min-width: 0;
   min-height: 100svh;
   flex-direction: column;
-  transition: margin-inline-end $transition-disclosure;
 }
 
 .site-layout__main {
@@ -49,17 +45,6 @@ const menuOpen = ref(false);
 
   &:not(:focus) {
     clip-path: inset(50%);
-  }
-}
-
-@media (min-width: $breakpoint-docked-menu) {
-  .site-layout {
-    --site-drawer-width: min(30vw, 30rem);
-    --site-drawer-docked: 1;
-  }
-
-  .site-layout--menu-open .site-layout__page {
-    margin-inline-end: var(--site-drawer-width);
   }
 }
 </style>

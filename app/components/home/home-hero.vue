@@ -82,6 +82,7 @@
 .home-hero__title {
   @include heading;
 
+  position: relative;
   font-size: clamp(4.25rem, 8.75vw, 8rem);
   font-weight: 850;
   line-height: 0.89;
@@ -93,7 +94,16 @@
 }
 
 .home-hero__hanging-controller {
-  display: none;
+  position: absolute;
+  z-index: 1;
+  top: 0.05em;
+  left: 0.33em;
+  width: 0.8em;
+  aspect-ratio: 192 / 126;
+  background: url('/images/dualsense-mobile.webp') center / contain no-repeat;
+  filter: drop-shadow(0 0.2rem 0.25rem rgb(0 0 0 / 55%));
+  pointer-events: none;
+  transform: translate(-50%, -59%) rotate(-9deg);
 }
 
 .home-hero__description {
@@ -155,22 +165,11 @@
   }
 
   .home-hero__title {
-    position: relative;
     font-size: clamp(3.25rem, 13.5vw, 5rem);
   }
 
   .home-hero__hanging-controller {
-    position: absolute;
-    z-index: 1;
-    top: 0.05em;
-    left: 0.33em;
-    display: block;
     width: clamp(2rem, 12vw, 3.25rem);
-    aspect-ratio: 192 / 126;
-    background: url('/images/dualsense-mobile.webp') center / contain no-repeat;
-    filter: drop-shadow(0 0.2rem 0.25rem rgb(0 0 0 / 55%));
-    pointer-events: none;
-    transform: translate(-50%, -59%) rotate(-9deg);
   }
 
   .home-hero__description {

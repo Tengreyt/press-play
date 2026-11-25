@@ -17,6 +17,8 @@ const emit = defineEmits<{ (event: 'toggle-menu'): void }>();
       <UiButton
         size="icon"
         variant="secondary"
+        class="app-header__menu"
+        :class="{ 'app-header__menu--hidden': menuOpen }"
         aria-label="Меню"
         :aria-controls="menuId"
         :aria-expanded="menuOpen"
@@ -75,6 +77,12 @@ const emit = defineEmits<{ (event: 'toggle-menu'): void }>();
 
 .app-header__dot {
   color: $color-accent;
+}
+
+.app-header__menu--hidden {
+  // Keep the trigger available for native focus restoration when the dialog closes.
+  opacity: 0;
+  pointer-events: none;
 }
 
 @media (max-width: $breakpoint-mobile) {
