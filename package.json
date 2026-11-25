@@ -6,6 +6,7 @@
     "dev": "nuxt dev",
     "build": "SITE_RUNTIME=cloudflare nuxt build",
     "build:node": "nuxt build",
+    "build:vercel": "NITRO_PRESET=vercel nuxt build",
     "preview": "node .output/server/index.mjs",
     "typecheck": "nuxt typecheck",
     "lint": "eslint app nuxt.config.ts eslint.config.mjs stylelint.config.mjs && stylelint 'app/**/*.{scss,vue}'",

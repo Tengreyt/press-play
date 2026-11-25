@@ -2,7 +2,7 @@
 
 GreytMove — проект TenGreyt по аренде PlayStation 5. На сайте есть тарифы на 1–7 суток, заявка через WhatsApp и справочник с правилами и видео PlayStation.
 
-[Открыть GreytMove](https://press-play-ps5-rental.halid-taramov20004.chatgpt.site/)
+[Открыть GreytMove](https://greytmove.halid-taramov20004.chatgpt.site/)
 
 ## Запуск
 
@@ -21,6 +21,8 @@ npm run build
 ## Публикация
 
 Сделай коммит перед сборкой для Sites. После публикации отправь этот же коммит в GitHub. Workflow сверяет SHA по публичному адресу `/press-play-deployment.json` и обновляет **Deployments → production** при пуше в основную ветку и примерно раз в пять минут. Повторную проверку можно запустить в **Actions → Sync Sites production deployment**.
+
+При импорте с GitHub в Vercel конфигурация `vercel.json` запускает `npm run build:vercel`. При необходимости задай `NUXT_PUBLIC_WHATSAPP_NUMBER` в настройках проекта Vercel.
 
 ## Аренда
 

@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { X } from '@lucide/vue';
+import { Snowflake, X } from '@lucide/vue';
 
-const props = defineProps<{ id: string; open: boolean }>();
-const emit = defineEmits<{ (event: 'close'): void }>();
+const props = defineProps<{ id: string; open: boolean; snowEnabled: boolean; reducedMotion: boolean }>();
+const emit = defineEmits<{
+  (event: 'close'): void;
+  (event: 'update:snowEnabled', enabled: boolean): void;
+}>();
 const drawer = useTemplateRef<HTMLDialogElement>('drawer');
 
 watchPostEffect(() => {
@@ -48,6 +51,24 @@ function closeAfterSelection(event: MouseEvent) {
       <NuxtLink to="/guide" class="app-navigation-drawer__link" @click="closeAfterSelection">Инструкции</NuxtLink>
       <NuxtLink to="/prices" class="app-navigation-drawer__link" @click="closeAfterSelection">Цены</NuxtLink>
     </nav>
+    <div class="app-navigation-drawer__setting">
+      <button
+        type="button"
+        role="switch"
+        class="app-navigation-drawer__switch"
+        :aria-checked="snowEnabled"
+        :aria-describedby="reducedMotion ? `${id}-motion` : undefined"
+        :disabled="reducedMotion"
+        @click="emit('update:snowEnabled', !snowEnabled)"
+      >
+        <Snowflake :size="18" aria-hidden="true" />
+        <span>Снег</span>
+        <span class="app-navigation-drawer__track" aria-hidden="true" />
+      </button>
+      <p v-if="reducedMotion" :id="`${id}-motion`" class="app-navigation-drawer__setting-hint">
+        В системе включено уменьшение движения.
+      </p>
+    </div>
   </dialog>
 </template>
 
@@ -133,6 +154,79 @@ function closeAfterSelection(event: MouseEvent) {
     color: $color-accent;
     background: $color-surface-raised;
   }
+}
+
+.app-navigation-drawer__setting {
+  display: grid;
+  gap: $gap-xs;
+  padding-top: $gap-sm;
+  border-top: 1px solid $color-border;
+}
+
+.app-navigation-drawer__switch {
+  display: grid;
+  min-height: $control-size;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: $gap-sm;
+  padding: $gap-xs $gap-sm;
+  border: 1px solid transparent;
+  border-radius: $radius-sm;
+  color: $color-text;
+  background: transparent;
+  cursor: pointer;
+  font-weight: 650;
+  text-align: left;
+
+  svg {
+    color: $color-lavender;
+  }
+
+  &:hover:not(:disabled) {
+    background: $color-surface-raised;
+  }
+
+  &:disabled {
+    color: $color-muted;
+    cursor: default;
+  }
+}
+
+.app-navigation-drawer__track {
+  display: flex;
+  width: 2.5rem;
+  height: 1.5rem;
+  align-items: center;
+  padding: 0.1875rem;
+  border: 1px solid $color-muted;
+  border-radius: $radius-pill;
+  background: $color-surface-raised;
+
+  &::before {
+    width: 1rem;
+    height: 1rem;
+    flex: none;
+    border-radius: 50%;
+    background: $color-muted;
+    content: '';
+    transition: transform $transition-fast;
+  }
+}
+
+.app-navigation-drawer__switch[aria-checked='true'] .app-navigation-drawer__track {
+  border-color: $color-accent;
+  background: $color-accent;
+
+  &::before {
+    background: $color-on-accent;
+    transform: translateX(1rem);
+  }
+}
+
+.app-navigation-drawer__setting-hint {
+  padding-inline: $gap-sm;
+  color: $color-muted;
+  font-size: 0.875rem;
 }
 
 @media (min-width: $breakpoint-desktop) {

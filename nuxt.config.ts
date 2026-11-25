@@ -22,7 +22,7 @@ export default defineNuxtConfig({
     },
   },
   nitro: {
-    preset: isCloudflare ? 'cloudflare_module' : 'node-server',
+    preset: isCloudflare ? 'cloudflare_module' : undefined,
     output: isCloudflare
       ? { dir: 'dist', serverDir: 'dist/server', publicDir: 'dist/client' }
       : undefined,

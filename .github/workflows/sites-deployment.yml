@@ -21,7 +21,7 @@ jobs:
     timeout-minutes: 3
     env:
       GH_TOKEN: ${{ github.token }}
-      SITE_URL: https://press-play-ps5-rental.halid-taramov20004.chatgpt.site
+      SITE_URL: https://greytmove.halid-taramov20004.chatgpt.site
     steps:
       - name: Record the revision served by Sites
         shell: bash

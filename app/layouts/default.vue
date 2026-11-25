@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const menuId = useId();
 const menuOpen = ref(false);
+const { snowActive, reducedMotion, setSnowEnabled } = useSeasonalSnow();
 </script>
 
 <template>
@@ -13,7 +14,15 @@ const menuOpen = ref(false);
       </main>
       <AppFooter />
     </div>
-    <AppNavigationDrawer :id="menuId" :open="menuOpen" @close="menuOpen = false" />
+    <AppSnow v-if="snowActive" />
+    <AppNavigationDrawer
+      :id="menuId"
+      :open="menuOpen"
+      :snow-enabled="snowActive"
+      :reduced-motion="reducedMotion"
+      @close="menuOpen = false"
+      @update:snow-enabled="setSnowEnabled"
+    />
   </div>
 </template>
 
