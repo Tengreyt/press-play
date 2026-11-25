@@ -46,6 +46,7 @@ function closeAfterSelection(event: MouseEvent) {
     <nav class="app-navigation-drawer__links" aria-label="Основная навигация">
       <NuxtLink to="/rent" class="app-navigation-drawer__link" @click="closeAfterSelection">Аренда</NuxtLink>
       <NuxtLink to="/guide" class="app-navigation-drawer__link" @click="closeAfterSelection">Инструкции</NuxtLink>
+      <NuxtLink to="/prices" class="app-navigation-drawer__link" @click="closeAfterSelection">Цены</NuxtLink>
     </nav>
   </dialog>
 </template>

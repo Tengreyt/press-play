@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { formatRentalPrice, rentalRates } from '~/utils/rental-pricing';
+
 useSeoMeta({
   title: 'Аренда PS5 через WhatsApp',
   description: 'Напиши в WhatsApp, чтобы узнать, свободна ли PlayStation 5 на твои даты, и договориться об аренде.',
@@ -14,11 +16,19 @@ const whatsappNumber = /^[1-9]\d{7,14}$/.test(phoneDigits(configuredNumber))
   ? configuredNumber
   : defaultWhatsAppNumber;
 const whatsappDigits = phoneDigits(whatsappNumber);
-const draft = encodeURIComponent('Ассаламу Алайкум. Хочу арендовать PS5. Подскажи, пожалуйста, свободные даты и стоимость.');
-const desktopQuery = `phone=${whatsappDigits}&text=${draft}&type=phone_number&app_absent=0`;
-const whatsappUrl = `https://wa.me/${whatsappDigits}?text=${draft}`;
-const whatsappWebUrl = `https://web.whatsapp.com/send/?${desktopQuery}`;
-const whatsappAppUrl = `whatsapp://send/?${desktopQuery}`;
+const route = useRoute();
+const selectedRate = computed(() => rentalRates.find(rate => String(rate.days) === route.query.days));
+const draft = computed(() => {
+  const rate = selectedRate.value;
+  const message = rate
+    ? `Ассаламу Алайкум. Хочу арендовать PS5 на ${rate.duration} за ${formatRentalPrice(rate.total)}. Подскажи, пожалуйста, свободные даты.`
+    : 'Ассаламу Алайкум. Хочу арендовать PS5. Подскажи, пожалуйста, свободные даты и стоимость.';
+  return encodeURIComponent(message);
+});
+const desktopQuery = computed(() => `phone=${whatsappDigits}&text=${draft.value}&type=phone_number&app_absent=0`);
+const whatsappUrl = computed(() => `https://wa.me/${whatsappDigits}?text=${draft.value}`);
+const whatsappWebUrl = computed(() => `https://web.whatsapp.com/send/?${desktopQuery.value}`);
+const whatsappAppUrl = computed(() => `whatsapp://send/?${desktopQuery.value}`);
 </script>
 
 <template>
@@ -27,7 +37,11 @@ const whatsappAppUrl = `whatsapp://send/?${desktopQuery}`;
     <div class="rent-page__layout">
       <header class="rent-page__intro">
         <h1>Аренда PS5</h1>
-        <p>Напиши, на какие даты нужна приставка. В чате уточним, свободна ли PS5, сколько стоит аренда и как её забрать.</p>
+        <p>Напиши, на какие даты нужна приставка. В чате уточним, свободна ли PS5 и как её забрать.</p>
+        <p v-if="selectedRate" class="rent-page__rate">
+          {{ selectedRate.duration }} · {{ formatRentalPrice(selectedRate.total) }}
+        </p>
+        <UiButton to="/prices" variant="secondary">{{ selectedRate ? 'Изменить срок' : 'Посмотреть цены' }}</UiButton>
       </header>
       <section class="rent-page__contact" aria-labelledby="rent-contact-title">
         <h2 id="rent-contact-title">Связаться по аренде</h2>
@@ -64,6 +78,7 @@ const whatsappAppUrl = `whatsapp://send/?${desktopQuery}`;
 .rent-page__intro {
   display: grid;
   align-content: start;
+  justify-items: start;
   gap: $gap-lg;
 
   h1 {
@@ -77,6 +92,11 @@ const whatsappAppUrl = `whatsapp://send/?${desktopQuery}`;
     color: $color-muted;
     font-size: 1.125rem;
   }
+}
+
+.rent-page__intro .rent-page__rate {
+  color: $color-accent;
+  font-weight: 730;
 }
 
 .rent-page__contact {
