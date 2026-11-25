@@ -57,7 +57,10 @@ export default defineNuxtConfig({
     head: {
       htmlAttrs: { lang: 'ru' },
       link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
-      meta: [{ name: 'theme-color', content: '#100d18' }],
+      meta: [
+        { name: 'theme-color', content: '#100d18' },
+        { name: 'yandex', content: 'noindex' },
+      ],
     },
   },
   typescript: { strict: true },

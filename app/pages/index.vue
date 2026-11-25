@@ -7,7 +7,6 @@ useSeoMeta({
 useHead({
   meta: [
     { name: 'google-site-verification', content: 'hEn7JHzM6xrhxK9UYgpg1nfIh0EIJHKjmObyGXXXWjY' },
-    { name: 'yandex-verification', content: '57baa59ca63a58db' },
   ],
   script: [{
     type: 'application/ld+json',
