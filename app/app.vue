@@ -1,8 +1,14 @@
 <script setup lang="ts">
-import { brandName } from '~/utils/brand';
+import { brandName, siteOrigin } from '~/utils/brand';
 
-useHead({ titleTemplate: (title) => title ? `${title} · ${brandName}` : `${brandName} · Аренда PlayStation 5` });
-useSeoMeta({ ogSiteName: brandName });
+const route = useRoute();
+const canonicalUrl = computed(() => `${siteOrigin}${route.path.replace(/\/+$/, '')}/`);
+
+useHead({
+  titleTemplate: (title) => title ? `${title} · ${brandName}` : `${brandName} · Аренда PlayStation 5`,
+  link: [{ rel: 'canonical', href: canonicalUrl }],
+});
+useSeoMeta({ ogSiteName: brandName, ogUrl: canonicalUrl });
 </script>
 
 <template>

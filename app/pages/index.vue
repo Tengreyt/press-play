@@ -1,6 +1,24 @@
 <script setup lang="ts">
+import { brandName, siteOrigin } from '~/utils/brand';
+
 useSeoMeta({
-  description: 'Аренда PlayStation 5 через WhatsApp и инструкции по консоли, играм и контроллеру.',
+  description: `${brandName} — аренда PlayStation 5 на срок от суток до недели. Посмотри цены и уточни свободные даты в WhatsApp.`,
+});
+useHead({
+  meta: [
+    { name: 'google-site-verification', content: 'hEn7JHzM6xrhxK9UYgpg1nfIh0EIJHKjmObyGXXXWjY' },
+    { name: 'yandex-verification', content: '57baa59ca63a58db' },
+  ],
+  script: [{
+    type: 'application/ld+json',
+    textContent: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: brandName,
+      alternateName: 'Грейтмув',
+      url: `${siteOrigin}/`,
+    }),
+  }],
 });
 </script>
 

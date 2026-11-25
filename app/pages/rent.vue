@@ -25,10 +25,7 @@ const draft = computed(() => {
     : 'Ассаламу Алайкум. Хочу арендовать PS5. Подскажи, пожалуйста, свободные даты и стоимость.';
   return encodeURIComponent(message);
 });
-const desktopQuery = computed(() => `phone=${whatsappDigits}&text=${draft.value}&type=phone_number&app_absent=0`);
 const whatsappUrl = computed(() => `https://wa.me/${whatsappDigits}?text=${draft.value}`);
-const whatsappWebUrl = computed(() => `https://web.whatsapp.com/send/?${desktopQuery.value}`);
-const whatsappAppUrl = computed(() => `whatsapp://send/?${desktopQuery.value}`);
 </script>
 
 <template>
@@ -45,14 +42,8 @@ const whatsappAppUrl = computed(() => `whatsapp://send/?${desktopQuery.value}`);
       </header>
       <section class="rent-page__contact" aria-labelledby="rent-contact-title">
         <h2 id="rent-contact-title">Связаться по аренде</h2>
-        <NuxtLink :to="whatsappUrl" external class="rent-page__number" :aria-label="`Чат WhatsApp с номером ${whatsappNumber}`">
-          {{ whatsappNumber }}
-        </NuxtLink>
-        <div class="rent-page__desktop-actions">
-          <UiButton :to="whatsappWebUrl" external target="_blank" rel="noopener noreferrer">WhatsApp Web</UiButton>
-          <UiButton :to="whatsappAppUrl" external variant="secondary">Открыть приложение</UiButton>
-        </div>
-        <UiButton :to="whatsappUrl" external class="rent-page__mobile-action">Открыть чат в WhatsApp</UiButton>
+        <span class="rent-page__number">{{ whatsappNumber }}</span>
+        <UiButton :to="whatsappUrl" external class="rent-page__whatsapp">WhatsApp</UiButton>
         <p>В чате откроется черновик сообщения. Можешь добавить даты перед отправкой.</p>
       </section>
     </div>
@@ -120,32 +111,11 @@ const whatsappAppUrl = computed(() => `whatsapp://send/?${desktopQuery.value}`);
   }
 }
 
-.rent-page__desktop-actions {
-  display: flex;
-  width: 100%;
-  flex-wrap: wrap;
-  gap: $gap-sm;
-
-  > a {
-    flex: 1 0 auto;
-  }
-}
-
-.rent-page__mobile-action.ui-button {
-  display: none;
-}
-
 .rent-page__number {
-  display: inline-flex;
-  min-height: $touch-target;
-  align-items: center;
-  border-radius: 0.25rem;
   color: $color-lavender;
   font-size: 1.125rem;
   font-variant-numeric: tabular-nums;
   font-weight: 650;
-  text-decoration: underline;
-  text-underline-offset: 0.25em;
 }
 
 @media (max-width: $breakpoint-tablet) {
@@ -175,15 +145,8 @@ const whatsappAppUrl = computed(() => `whatsapp://send/?${desktopQuery.value}`);
     padding: $gap-md;
     border-radius: $radius-md;
   }
-}
 
-@media (hover: none) and (pointer: coarse) {
-  .rent-page__desktop-actions {
-    display: none;
-  }
-
-  .rent-page__mobile-action.ui-button {
-    display: inline-flex;
+  .rent-page__whatsapp {
     justify-self: stretch;
   }
 }
