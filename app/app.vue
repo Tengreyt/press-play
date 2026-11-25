@@ -1,5 +1,8 @@
 <script setup lang="ts">
-useHead({ titleTemplate: (title) => title ? `${title} · Press Play` : 'Press Play · Аренда PlayStation 5' });
+import { brandName } from '~/utils/brand';
+
+useHead({ titleTemplate: (title) => title ? `${title} · ${brandName}` : `${brandName} · Аренда PlayStation 5` });
+useSeoMeta({ ogSiteName: brandName });
 </script>
 
 <template>

@@ -1,8 +1,15 @@
+<script setup lang="ts">
+import { brandOwner } from '~/utils/brand';
+</script>
+
 <template>
   <footer class="app-footer">
     <UiContainer class="app-footer__inner">
-      <NuxtLink to="/" class="app-footer__brand">press<span>.</span>play</NuxtLink>
-      <p>Сервис аренды PlayStation 5</p>
+      <AppBrand compact />
+      <div class="app-footer__about">
+        <p>Аренда PlayStation 5</p>
+        <p>Проект <span class="app-footer__owner">{{ brandOwner }}</span></p>
+      </div>
     </UiContainer>
   </footer>
 </template>
@@ -24,14 +31,14 @@
   font-size: 0.875rem;
 }
 
-.app-footer__brand {
-  color: $color-text;
-  font-size: 1.0625rem;
-  font-weight: 780;
-  letter-spacing: -0.055em;
+.app-footer__about {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $gap-xs $gap-lg;
+}
 
-  span {
-    color: $color-accent;
-  }
+.app-footer__owner {
+  color: $color-lavender;
+  font-weight: 650;
 }
 </style>

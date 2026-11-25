@@ -59,7 +59,7 @@ jobs:
               production_environment: true,
               auto_merge: false,
               required_contexts: [],
-              description: "Press Play published on Sites"
+              description: "GreytMove published on Sites"
             }' | gh api "$repository/deployments" --input - --jq '.id')
           fi
 

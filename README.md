@@ -1,12 +1,12 @@
-# Press Play
+# GreytMove
 
-Сайт аренды PlayStation 5 на Nuxt 4. На главной два перехода: аренда через WhatsApp и справочник. В справочнике есть текст на русском, правила пользования и видео официальных каналов PlayStation на английском.
+GreytMove — проект TenGreyt по аренде PlayStation 5. На сайте есть тарифы на 1–7 суток, заявка через WhatsApp и справочник с правилами и видео PlayStation.
 
-[Открыть Press Play](https://press-play-ps5-rental.halid-taramov20004.chatgpt.site/)
+[Открыть GreytMove](https://press-play-ps5-rental.halid-taramov20004.chatgpt.site/)
 
 ## Запуск
 
-Нужен Node.js 22.18 или новее. Для подстановки другого номера WhatsApp укажи в `.env` значение `NUXT_PUBLIC_WHATSAPP_NUMBER` с кодом страны. Без переменной на странице показывается основной контакт Press Play.
+Нужен Node.js 22.18 или новее. Для подстановки другого номера WhatsApp укажи в `.env` значение `NUXT_PUBLIC_WHATSAPP_NUMBER` с кодом страны. Без переменной на странице показывается основной контакт GreytMove.
 
 ```sh
 npm ci

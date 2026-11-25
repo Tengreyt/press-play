@@ -1,4 +1,4 @@
-# Press Play
+# GreytMove
 
 Проект использует Nuxt 4, Vue 3, строгий TypeScript, npm, SCSS и `nuxt-svgo`. Соглашения адаптированы из `main-site-service` (CHESU) для сайта аренды.
 

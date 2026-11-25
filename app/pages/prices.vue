@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { brandName } from '~/utils/brand';
 import { dailyRentalPrice, formatRentalPrice, rentalRates, weeklyRentalRate } from '~/utils/rental-pricing';
 
 useSeoMeta({
   title: 'Цены на аренду PS5',
-  description: `Тарифы Press Play на аренду PlayStation 5. Сутки стоят ${formatRentalPrice(dailyRentalPrice)}, неделя — ${formatRentalPrice(weeklyRentalRate.total)}.`,
+  description: `Тарифы ${brandName} на аренду PlayStation 5. Сутки стоят ${formatRentalPrice(dailyRentalPrice)}, неделя — ${formatRentalPrice(weeklyRentalRate.total)}.`,
 });
 
 const weeklySavings = weeklyRentalRate.days * dailyRentalPrice - weeklyRentalRate.total;
