@@ -1,6 +1,6 @@
 const storageKey = 'greytmove:snow';
 
-export function useSeasonalSnow() {
+export function useSnow() {
   const snowEnabled = ref(false);
   const reducedMotion = ref(false);
   const snowActive = computed(() => snowEnabled.value && !reducedMotion.value);
@@ -15,13 +15,10 @@ export function useSeasonalSnow() {
     reducedMotion.value = motionPreference.matches;
     motionPreference.addEventListener('change', updateMotionPreference);
 
-    const month = new Intl.DateTimeFormat('en', { month: 'numeric', timeZone: 'Europe/Moscow' });
-    snowEnabled.value = month.format(new Date()) === '12';
     try {
-      const saved = localStorage.getItem(storageKey);
-      if (saved === 'on' || saved === 'off') snowEnabled.value = saved === 'on';
+      snowEnabled.value = localStorage.getItem(storageKey) !== 'off';
     } catch {
-      // The preference still works for the current visit when storage is blocked.
+      snowEnabled.value = true;
     }
   });
 

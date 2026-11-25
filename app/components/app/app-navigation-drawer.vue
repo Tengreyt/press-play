@@ -42,33 +42,33 @@ function closeAfterSelection(event: MouseEvent) {
   >
     <header class="app-navigation-drawer__header">
       <h2 :id="`${id}-title`">Меню</h2>
-      <div class="app-navigation-drawer__actions">
-        <UiButton
-          size="icon"
-          :variant="snowEnabled ? 'primary' : 'secondary'"
-          class="app-navigation-drawer__snow"
-          aria-label="Снег"
-          title="Снег"
-          :aria-pressed="snowEnabled"
-          :aria-describedby="reducedMotion ? `${id}-motion` : undefined"
-          :disabled="reducedMotion"
-          @click="emit('update:snowEnabled', !snowEnabled)"
-        >
-          <Snowflake :size="20" aria-hidden="true" />
-        </UiButton>
-        <UiButton size="icon" variant="secondary" aria-label="Закрыть меню" autofocus @click="emit('close')">
-          <X :size="22" aria-hidden="true" />
-        </UiButton>
-      </div>
+      <UiButton size="icon" variant="secondary" aria-label="Закрыть меню" autofocus @click="emit('close')">
+        <X :size="22" aria-hidden="true" />
+      </UiButton>
     </header>
     <nav class="app-navigation-drawer__links" aria-label="Основная навигация">
       <NuxtLink to="/rent" class="app-navigation-drawer__link" @click="closeAfterSelection">Аренда</NuxtLink>
       <NuxtLink to="/guide" class="app-navigation-drawer__link" @click="closeAfterSelection">Инструкции</NuxtLink>
       <NuxtLink to="/prices" class="app-navigation-drawer__link" @click="closeAfterSelection">Цены</NuxtLink>
     </nav>
-    <p v-if="reducedMotion" :id="`${id}-motion`" class="app-navigation-drawer__setting-hint">
-      В системе включено уменьшение движения.
-    </p>
+    <div class="app-navigation-drawer__footer">
+      <p v-if="reducedMotion" :id="`${id}-motion`" class="app-navigation-drawer__setting-hint">
+        В системе включено уменьшение движения.
+      </p>
+      <UiButton
+        size="icon"
+        :variant="snowEnabled ? 'primary' : 'secondary'"
+        class="app-navigation-drawer__snow"
+        aria-label="Снег"
+        title="Снег"
+        :aria-pressed="snowEnabled"
+        :aria-describedby="reducedMotion ? `${id}-motion` : undefined"
+        :disabled="reducedMotion"
+        @click="emit('update:snowEnabled', !snowEnabled)"
+      >
+        <Snowflake :size="20" aria-hidden="true" />
+      </UiButton>
+    </div>
   </dialog>
 </template>
 
@@ -82,12 +82,12 @@ function closeAfterSelection(event: MouseEvent) {
   z-index: 6;
   inset: 0 0 0 auto;
   display: none;
-  overflow: auto;
+  overflow: hidden;
   width: min(84vw, 22rem);
   max-width: none;
   height: 100dvh;
   max-height: none;
-  align-content: start;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   gap: $gap-lg;
   margin: 0;
   padding: clamp(1rem, 2.8vw, 2rem);
@@ -128,10 +128,11 @@ function closeAfterSelection(event: MouseEvent) {
   }
 }
 
-.app-navigation-drawer__actions {
+.app-navigation-drawer__footer {
   display: flex;
-  flex: none;
-  gap: $gap-xs;
+  align-items: center;
+  justify-content: flex-end;
+  gap: $gap-sm;
 }
 
 .app-navigation-drawer__snow.ui-button {
@@ -157,7 +158,12 @@ function closeAfterSelection(event: MouseEvent) {
 
 .app-navigation-drawer__links {
   display: grid;
+  overflow: auto;
+  align-content: start;
   gap: $gap-xs;
+  margin: -$gap-xs;
+  padding: $gap-xs;
+  overscroll-behavior: contain;
 }
 
 .app-navigation-drawer__link {
@@ -184,9 +190,14 @@ function closeAfterSelection(event: MouseEvent) {
 }
 
 .app-navigation-drawer__setting-hint {
-  padding-inline: $gap-sm;
   color: $color-muted;
   font-size: 0.875rem;
+}
+
+@media (height <= 28rem) {
+  .app-navigation-drawer {
+    gap: $gap-sm;
+  }
 }
 
 @media (min-width: $breakpoint-desktop) {

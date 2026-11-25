@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const menuId = useId();
 const menuOpen = ref(false);
-const { snowActive, reducedMotion, setSnowEnabled } = useSeasonalSnow();
+const { snowActive, reducedMotion, setSnowEnabled } = useSnow();
 </script>
 
 <template>
