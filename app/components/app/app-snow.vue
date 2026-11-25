@@ -12,6 +12,18 @@ const flakes = [
   { left: 26, size: 2, duration: 22, phase: 12, drift: 28 },
   { left: 49, size: 3, duration: 15, phase: 8, drift: 15 },
   { left: 75, size: 2, duration: 17, phase: 3, drift: -21 },
+  { left: 23, size: 3, duration: 17, phase: 7, drift: 16 },
+  { left: 38, size: 2, duration: 21, phase: 2, drift: -24 },
+  { left: 63, size: 4, duration: 18, phase: 12, drift: 22 },
+  { left: 88, size: 3, duration: 16, phase: 1, drift: -16 },
+  { left: 8, size: 3, duration: 20, phase: 12, drift: 27 },
+  { left: 16, size: 2, duration: 14, phase: 7, drift: -19 },
+  { left: 34, size: 2, duration: 19, phase: 4, drift: 17 },
+  { left: 46, size: 3, duration: 18, phase: 16, drift: -24 },
+  { left: 52, size: 4, duration: 17, phase: 10, drift: 19 },
+  { left: 58, size: 2, duration: 14, phase: 6, drift: -22 },
+  { left: 72, size: 3, duration: 21, phase: 16, drift: 25 },
+  { left: 97, size: 3, duration: 18, phase: 4, drift: -28 },
 ];
 </script>
 
@@ -49,11 +61,11 @@ const flakes = [
   height: var(--size);
   border-radius: 50%;
   background: $color-text;
-  opacity: 0.38;
+  opacity: 0.46;
   animation: snow-fall var(--duration) linear var(--delay) infinite;
 
   &:nth-child(3n) {
-    opacity: 0.64;
+    opacity: 0.72;
   }
 }
 
@@ -68,7 +80,7 @@ const flakes = [
 }
 
 @media (max-width: $breakpoint-mobile) {
-  .app-snow__flake:nth-child(n + 9) {
+  .app-snow__flake:nth-child(n + 17) {
     display: none;
   }
 }

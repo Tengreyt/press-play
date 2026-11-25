@@ -42,33 +42,33 @@ function closeAfterSelection(event: MouseEvent) {
   >
     <header class="app-navigation-drawer__header">
       <h2 :id="`${id}-title`">Меню</h2>
-      <UiButton size="icon" variant="secondary" aria-label="Закрыть меню" @click="emit('close')">
-        <X :size="22" aria-hidden="true" />
-      </UiButton>
+      <div class="app-navigation-drawer__actions">
+        <UiButton
+          size="icon"
+          :variant="snowEnabled ? 'primary' : 'secondary'"
+          class="app-navigation-drawer__snow"
+          aria-label="Снег"
+          title="Снег"
+          :aria-pressed="snowEnabled"
+          :aria-describedby="reducedMotion ? `${id}-motion` : undefined"
+          :disabled="reducedMotion"
+          @click="emit('update:snowEnabled', !snowEnabled)"
+        >
+          <Snowflake :size="20" aria-hidden="true" />
+        </UiButton>
+        <UiButton size="icon" variant="secondary" aria-label="Закрыть меню" autofocus @click="emit('close')">
+          <X :size="22" aria-hidden="true" />
+        </UiButton>
+      </div>
     </header>
     <nav class="app-navigation-drawer__links" aria-label="Основная навигация">
       <NuxtLink to="/rent" class="app-navigation-drawer__link" @click="closeAfterSelection">Аренда</NuxtLink>
       <NuxtLink to="/guide" class="app-navigation-drawer__link" @click="closeAfterSelection">Инструкции</NuxtLink>
       <NuxtLink to="/prices" class="app-navigation-drawer__link" @click="closeAfterSelection">Цены</NuxtLink>
     </nav>
-    <div class="app-navigation-drawer__setting">
-      <button
-        type="button"
-        role="switch"
-        class="app-navigation-drawer__switch"
-        :aria-checked="snowEnabled"
-        :aria-describedby="reducedMotion ? `${id}-motion` : undefined"
-        :disabled="reducedMotion"
-        @click="emit('update:snowEnabled', !snowEnabled)"
-      >
-        <Snowflake :size="18" aria-hidden="true" />
-        <span>Снег</span>
-        <span class="app-navigation-drawer__track" aria-hidden="true" />
-      </button>
-      <p v-if="reducedMotion" :id="`${id}-motion`" class="app-navigation-drawer__setting-hint">
-        В системе включено уменьшение движения.
-      </p>
-    </div>
+    <p v-if="reducedMotion" :id="`${id}-motion`" class="app-navigation-drawer__setting-hint">
+      В системе включено уменьшение движения.
+    </p>
   </dialog>
 </template>
 
@@ -128,6 +128,33 @@ function closeAfterSelection(event: MouseEvent) {
   }
 }
 
+.app-navigation-drawer__actions {
+  display: flex;
+  flex: none;
+  gap: $gap-xs;
+}
+
+.app-navigation-drawer__snow.ui-button {
+  &:not([aria-pressed='true']) {
+    color: $color-muted;
+    background: linear-gradient(145deg, $color-surface-raised, $color-surface);
+
+    &:hover:not(:disabled) {
+      color: $color-text;
+      background: $color-surface-raised;
+    }
+  }
+
+  &[aria-pressed='true'] {
+    border-color: $color-accent;
+    box-shadow: 0 0 0.875rem rgb(216 250 99 / 18%);
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+}
+
 .app-navigation-drawer__links {
   display: grid;
   gap: $gap-xs;
@@ -153,73 +180,6 @@ function closeAfterSelection(event: MouseEvent) {
     border-color: $color-border;
     color: $color-accent;
     background: $color-surface-raised;
-  }
-}
-
-.app-navigation-drawer__setting {
-  display: grid;
-  gap: $gap-xs;
-  padding-top: $gap-sm;
-  border-top: 1px solid $color-border;
-}
-
-.app-navigation-drawer__switch {
-  display: grid;
-  min-height: $control-size;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: $gap-sm;
-  padding: $gap-xs $gap-sm;
-  border: 1px solid transparent;
-  border-radius: $radius-sm;
-  color: $color-text;
-  background: transparent;
-  cursor: pointer;
-  font-weight: 650;
-  text-align: left;
-
-  svg {
-    color: $color-lavender;
-  }
-
-  &:hover:not(:disabled) {
-    background: $color-surface-raised;
-  }
-
-  &:disabled {
-    color: $color-muted;
-    cursor: default;
-  }
-}
-
-.app-navigation-drawer__track {
-  display: flex;
-  width: 2.5rem;
-  height: 1.5rem;
-  align-items: center;
-  padding: 0.1875rem;
-  border: 1px solid $color-muted;
-  border-radius: $radius-pill;
-  background: $color-surface-raised;
-
-  &::before {
-    width: 1rem;
-    height: 1rem;
-    flex: none;
-    border-radius: 50%;
-    background: $color-muted;
-    content: '';
-    transition: transform $transition-fast;
-  }
-}
-
-.app-navigation-drawer__switch[aria-checked='true'] .app-navigation-drawer__track {
-  border-color: $color-accent;
-  background: $color-accent;
-
-  &::before {
-    background: $color-on-accent;
-    transform: translateX(1rem);
   }
 }
 
